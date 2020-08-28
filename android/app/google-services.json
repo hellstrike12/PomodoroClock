@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "656264538584",
+    "firebase_url": "https://pomodoroclock-d839e.firebaseio.com",
+    "project_id": "pomodoroclock-d839e",
+    "storage_bucket": "pomodoroclock-d839e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656264538584:android:05ca13ba11c90224c1aaad",
+        "android_client_info": {
+          "package_name": "com.example.pomodoro_clock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656264538584-t4t30855970cl7khaunm15mm86g5uf30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpL8KRLcyunlJGkxRaSdRciGsW1hGFR6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656264538584-t4t30855970cl7khaunm15mm86g5uf30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
