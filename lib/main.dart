@@ -1,9 +1,44 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(
+    ScopedModel<RootModel>(model: RootModel(), child: MyApp())
+  );
+}
 
+//-------------------------------- MODELS --------------------------------------
+class RootModel extends Model {
+  static RootModel of(BuildContext context) =>
+      ScopedModel.of<RootModel>(context);
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth= FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  User user;
+
+  Future<void> _handleLogin() async {
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    UserCredential _userCredential =
+        await _auth.signInWithCredential(credential);
+    user = _userCredential.user;
+    notifyListeners();
+  }
+}
+//------------------------------------------------------------------------------
 //--------------------------------- ROOT ---------------------------------------
 class MyApp extends StatelessWidget {
   @override
@@ -14,7 +49,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 //------------------------------------------------------------------------------
 //---------------------------------- HOME --------------------------------------
 class Home extends StatelessWidget {
@@ -66,7 +100,6 @@ class Home extends StatelessWidget {
     );
   }
 }
-
 //------------------------------------------------------------------------------
 //--------------------------------- CLOCK --------------------------------------
 class Clock extends StatefulWidget {
@@ -87,25 +120,23 @@ class _ClockState extends State<Clock> {
   Color _fgWorkColor = Colors.blue;
 
   void _tick() {
-    if (mounted && !_pause) {
-      if (_min == 0 && _sec == 0) {
-        _breakTime = !_breakTime;
-        if (_breakTime) {
-          _min = 5;
-          _sec = 0;
-        } else {
-          _min = 25;
-          _sec = 0;
-        }
-      } else if (_sec == 0) {
-        _min--;
-        _sec = 59;
+    if (_min == 0 && _sec == 0) {
+      _breakTime = !_breakTime;
+      if (_breakTime) {
+        _min = 5;
+        _sec = 0;
       } else {
-        _sec--;
+        _min = 25;
+        _sec = 0;
       }
-      setState(() {});
-      _setTimer();
+    } else if (_sec == 0) {
+      _min--;
+      _sec = 59;
+    } else {
+      _sec--;
     }
+    setState(() {});
+    _setTimer();
   }
 
   Timer _setTimer() {
@@ -116,11 +147,12 @@ class _ClockState extends State<Clock> {
   void _startTimer() {
     _pause = false;
     _setTimer();
+    setState(() {});
   }
 
   void _stopTimer() {
     _pause = true;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   void _resetTimer() {
@@ -128,7 +160,7 @@ class _ClockState extends State<Clock> {
     _min = 25;
     _sec = 0;
     _breakTime = false;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   @override
@@ -142,21 +174,38 @@ class _ClockState extends State<Clock> {
               value: _breakTime
                   ? ((_min * 60) + _sec) / 300
                   : ((_min * 60) + _sec) / 1500,
-              backgroundColor: (_breakTime ? _bgBreakColor : _bgWorkColor),
+              backgroundColor: (
+                  _breakTime
+                  ? _bgBreakColor
+                  : _bgWorkColor
+              ),
               valueColor: AlwaysStoppedAnimation(
-                  _breakTime ? _fgBreakColor : _fgWorkColor),
+                  _breakTime
+                      ? _fgBreakColor
+                      : _fgWorkColor
+              ),
             ),
             height: 220,
             width: 220,
           ),
           FlatButton(
             child: Text(
-              '${_min > 9 ? _min : "0$_min"}:${_sec > 9 ? _sec : "0$_sec"}',
+              '${
+                  _min > 9
+                      ? _min
+                      : "0$_min"
+              }:${
+                  _sec > 9
+                      ? _sec
+                      : "0$_sec"
+              }',
               style: TextStyle(
                 fontSize: 70,
               ),
             ),
-            onPressed: () => _pause ? _startTimer() : _stopTimer(),
+            onPressed: () => _pause
+                ? _startTimer()
+                : _stopTimer(),
             onLongPress: () => _resetTimer(),
             shape: CircleBorder(),
             color: Colors.white,
@@ -168,7 +217,6 @@ class _ClockState extends State<Clock> {
     );
   }
 }
-
 //------------------------------------------------------------------------------
 //------------------------------- ACTIVITIES -----------------------------------
 class Activities extends StatelessWidget {
@@ -179,7 +227,10 @@ class Activities extends StatelessWidget {
         title: Text('Minhas Atividades'),
       ),
       body: Center(
-        child: Text('Teste'),
+        child: FlatButton(
+          child: Text('Click me to log in'),
+          onPressed: () {RootModel.of(context)._handleLogin();},
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, size: 30),
@@ -195,7 +246,6 @@ class Activities extends StatelessWidget {
     );
   }
 }
-
 //------------------------------------------------------------------------------
 //---------------------------------- POP UP ------------------------------------
 class PopUp extends StatelessWidget {
@@ -219,8 +269,6 @@ class PopUp extends StatelessWidget {
   }
 }
 
-//------------------------------------------------------------------------------
-//----------------------------- POP-UP HEAD ------------------------------------
 class PopUpHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -240,13 +288,11 @@ class PopUpHead extends StatelessWidget {
           topRight: Radius.circular(10),
         ),
       ),
-      width: 300,
+      width: 1000,
     );
   }
 }
 
-//------------------------------------------------------------------------------
-//----------------------------- POP-UP BODY ------------------------------------
 class PopUpBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

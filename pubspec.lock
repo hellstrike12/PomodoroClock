@@ -36,6 +36,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety"
+  cloud_firestore:
+    dependency: "direct dev"
+    description:
+      name: cloud_firestore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.0+2"
+  cloud_firestore_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_firestore_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+  cloud_firestore_web:
+    dependency: transitive
+    description:
+      name: cloud_firestore_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+1"
   collection:
     dependency: transitive
     description:
@@ -64,27 +85,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.3.0"
-  firebase_analytics:
+  firebase_auth:
     dependency: "direct dev"
     description:
-      name: firebase_analytics
+      name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.0"
-  firebase_analytics_platform_interface:
+    version: "0.18.0+1"
+  firebase_auth_platform_interface:
     dependency: transitive
     description:
-      name: firebase_analytics_platform_interface
+      name: firebase_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
-  firebase_analytics_web:
+    version: "2.0.1"
+  firebase_auth_web:
     dependency: transitive
     description:
-      name: firebase_analytics_web
+      name: firebase_auth_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1"
+    version: "0.3.0+1"
   firebase_core:
     dependency: "direct dev"
     description:
@@ -106,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  firebase_database:
-    dependency: "direct dev"
-    description:
-      name: firebase_database
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -128,6 +142,27 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_sign_in:
+    dependency: "direct dev"
+    description:
+      name: google_sign_in
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.5.3"
+  google_sign_in_platform_interface:
+    dependency: transitive
+    description:
+      name: google_sign_in_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
+  google_sign_in_web:
+    dependency: transitive
+    description:
+      name: google_sign_in_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.1+1"
   http:
     dependency: transitive
     description:
@@ -142,6 +177,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   js:
     dependency: transitive
     description:
@@ -191,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+  scoped_model:
+    dependency: "direct dev"
+    description:
+      name: scoped_model
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
